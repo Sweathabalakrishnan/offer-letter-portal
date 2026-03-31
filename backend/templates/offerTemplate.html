@@ -1,0 +1,534 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Offer Letter</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @font-face {
+      font-family: "SpectralCustom";
+      src: url("{{spectralRegularFont}}") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "SpectralCustom";
+      src: url("{{spectralBoldFont}}") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #e5e7eb;
+      font-family: "SpectralCustom", "Times New Roman", serif;
+      color: #000;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .sheet {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto 8px auto;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .sheet:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+
+    .watermark {
+      position: absolute;
+      inset: 0;
+      background-image: url("{{watermarkUrl}}");
+      background-repeat: no-repeat;
+      background-position: center 48%;
+      background-size: 410px auto;
+      opacity: 0.19;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      padding: 16mm 14mm 22mm 14mm;
+      height: 100%;
+    }
+
+    .header {
+      height: 24mm;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+    }
+
+    .logo {
+      width: 110px;
+      height: auto;
+      display: block;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 14pt;
+      font-weight: 700;
+      margin-top: 2mm;
+      margin-bottom: 5mm;
+      letter-spacing: 0.5px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10pt;
+      font-weight: 700;
+      margin-bottom: 5mm;
+    }
+
+    .address {
+      font-size: 10pt;
+      line-height: 1.45;
+      margin-bottom: 4mm;
+    }
+
+    .address div {
+      margin-bottom: 1mm;
+    }
+
+    .email {
+      text-decoration: underline;
+      color: #1d4ed8;
+    }
+
+    .subject {
+      font-size: 10pt;
+      font-weight: 700;
+      margin-bottom: 4mm;
+    }
+
+    p {
+      margin: 0 0 3.2mm 0;
+      font-size: 10pt;
+      line-height: 1.45;
+      text-align: justify;
+    }
+
+    .section-title {
+      font-size: 11pt;
+      font-weight: 700;
+      text-decoration: underline;
+      margin: 3mm 0;
+    }
+
+    ol {
+      margin: 0;
+      padding-left: 7mm;
+    }
+
+    ol li {
+      margin: 0 0 3.2mm 0;
+      padding-left: 1mm;
+      font-size: 10pt;
+      line-height: 1.45;
+      text-align: justify;
+    }
+
+    ul.star {
+      list-style: none;
+      margin: 0;
+      padding-left: 0;
+    }
+
+    ul.star li {
+      position: relative;
+      padding-left: 5mm;
+      margin-bottom: 2.4mm;
+      font-size: 10pt;
+      line-height: 1.4;
+    }
+
+    ul.star li::before {
+      content: "★";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 8pt;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10pt;
+    }
+
+    th, td {
+      border: 1px solid #111;
+      padding: 2.4mm 2.2mm;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f2f2f2;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .benefits td:first-child {
+      width: 30%;
+      font-weight: 700;
+    }
+
+    .salary-wrap {
+      width: 68%;
+      margin: 2mm auto 0 auto;
+    }
+
+    .salary td:first-child,
+    .salary td:last-child {
+      text-align: center;
+      width: 50%;
+    }
+
+    .bg-orange {
+      background: #f2dfcf;
+      font-weight: 700;
+    }
+
+    .bg-pink {
+      background: #f0d7db;
+      font-weight: 700;
+    }
+
+    .note {
+      font-size: 10pt;
+      margin-top: 2mm;
+    }
+
+    .signature-block {
+      display: flex;
+      justify-content: space-between;
+      gap: 10mm;
+      margin-top: 6mm;
+    }
+
+    .signature-left,
+    .signature-right {
+      width: 48%;
+    }
+
+    .signature-right {
+      text-align: center;
+    }
+
+    .signature-right p {
+      text-align: center;
+    }
+
+    .signature-img {
+      width: 145px;
+      height: auto;
+      display: block;
+      margin: 2mm 0;
+    }
+
+    .spacer {
+      height: 24mm;
+    }
+
+    .auto-note {
+      margin-top: 4mm;
+      text-align: center;
+      font-size: 10pt;
+      font-style: italic;
+    }
+
+    .footer {
+      position: absolute;
+      left: 14mm;
+      right: 14mm;
+      bottom: 6mm;
+      text-align: center;
+      font-size: 7.9pt;
+      line-height: 1.25;
+    }
+
+    .footer .company {
+      color: #c1121f;
+      font-weight: 700;
+    }
+
+    .footer .red {
+      color: #c1121f;
+    }
+
+    .footer hr {
+      border: none;
+      border-top: 1px solid #777;
+      margin: 2mm 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="sheet">
+    <div class="watermark"></div>
+    <div class="inner">
+      <div class="header">
+        <img class="logo" src="{{logoUrl}}" alt="Logo" />
+      </div>
+
+      <div class="title">OFFER LETTER</div>
+
+      <div class="meta">
+        <div>{{documentId}}</div>
+        <div>{{date}}</div>
+      </div>
+
+      <div class="address">
+        <div><strong>{{employeeName}}</strong>,</div>
+        <div>+91 {{phoneNumber}},</div>
+        <div class="email">{{mailId}}</div>
+      </div>
+
+      <div class="subject">
+        Subject: Offer of Employment for the Position of {{designation}}
+      </div>
+
+      <p><strong>Dear {{salutation}} {{employeeName}}</strong></p>
+      <p><strong>Congratulations!!</strong></p>
+
+      <p>
+        We are delighted to extend an offer of employment to you for the position of
+        <strong>{{designation}}</strong> at <strong>({{locationDepartment}})</strong>
+        with Infonet Comm Enterprises. You are required to join on or before the
+        <strong>{{doj}}</strong>.
+      </p>
+
+      <p>
+        Annual Cost to the Company: <strong>Rs.{{annualCTC}}-/-</strong>
+        ( Rs. {{grossPayInWords}} ). A detailed breakup is provided in the annexure for your
+        reference. In addition to the competitive salary package, you will enjoy various
+        benefits and privileges as part of your employment with us. These include:
+      </p>
+
+      <div class="section-title">Section - A</div>
+
+      <ol start="1">
+        <li>
+          <strong>Gratuity:</strong> Employee will be eligible for Gratuity, on separation
+          after Five years of continuous service, payable as per Payment of Gratuity Act 1972.
+        </li>
+        <li>
+          <strong>Leave Program:</strong> Generous leave allowances including statutory holidays,
+          sick leave, casual leave, and earned leave.
+        </li>
+      </ol>
+
+      <table class="benefits">
+        <tr>
+          <th>Statutory Holidays</th>
+          <th>12 days per annum</th>
+        </tr>
+        <tr>
+          <td>Sick Leave (SL)</td>
+          <td>A maximum of 7 days per annum Based on your DOJ (cannot be carry forwarded to next calendar year)</td>
+        </tr>
+        <tr>
+          <td>Casual Leave (CL)</td>
+          <td>A maximum of 7 days per annum Based on your DOJ (cannot be carry forwarded to next calendar year)</td>
+        </tr>
+        <tr>
+          <td>Earned Leave (EL)</td>
+          <td>A maximum of 12 days per annum (can be carry forwarded to next calendar year)</td>
+        </tr>
+        <tr>
+          <td>Maternity leave (ML)</td>
+          <td>26 weeks (182 days) The employee should have worked for at least days in the 12 months preceding the expected delivery date.</td>
+        </tr>
+      </table>
+
+      <p class="note">
+        <br>
+        <strong><u>Note:</u></strong> All the above-mentioned Section – A benefits are subjected to change by employer from time to time.
+      </p>
+
+      <div class="footer">
+        <div class="company">INFONET COMM ENTERPRISES PVT LTD</div>
+        <div><span class="red">Registered Office :</span> TS.137, TVK Industrial Estate, Ekkattuthangal, Guindy, Chennai-600032.</div>
+        <div><span class="red">Head Office :</span> 468/10, Balaji Nagar, Tiruchengode Road, Near Collector Office, Namakkal -637003. info@infonetcomm.com, www.infonetcomm.com</div>
+        <hr />
+        <div>ISO 9001:2015, ISO 27001: 2013, CIN No: U72200TN1999PTC136457, GST No: 33AACCM8749D1ZH, Customer Care: +91 8100 700 900</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="sheet">
+    <div class="watermark"></div>
+    <div class="inner">
+      <div class="header">
+        <img class="logo" src="{{logoUrl}}" alt="Logo" />
+      </div>
+
+      <div class="section-title">Section - B</div>
+
+      <ol start="1">
+        <li>You will be under <strong>Probation</strong> for a period of <strong>{{probationPeriodText}}</strong> from the date of joining duty and your services will be confirmed after that.</li>
+        <li>Working days will be <strong>Six days (Monday to Saturday)</strong> in a week; <strong>Sunday</strong> will be a Weekly Holiday. This is subject to any change that may come into force in the future.</li>
+        <li>Work Hours: As an employee, you are expected to work for a total of <strong>8 hours per day</strong>, excluding break hours.</li>
+        <li>During the Probation Period, you will be eligible for <strong>one day leave</strong> for every month, and after confirmation, your leave eligibility will be as per the company’s leave policy.</li>
+        <li>During the Probation period, if you are absent for more than <strong>two continuous days</strong> without any intimation to your immediate head, your services will be terminated without any notice.</li>
+        <li>During the Probation period, this employment may be terminated by either party giving <strong>one-month</strong> prior notice to the other party.</li>
+        <li>After the Completion of the probation period, the employment may be terminated by either party giving <strong>One or Two Months</strong> prior notice to the other party based on employee grade. During the notice period, you will be discharging your duties in your capacity and eligible for salary and other emoluments as a regular full-time employee. In the event termination by <strong>Infonet Comm</strong>, the company can either provide a notice of two months or relieve earlier with the due notice pay.</li>
+        <li>If the Employee wishes to terminate their employment before the completion of the agreed-upon notice period, they may choose to exercise the <strong>buyout option</strong>. Under this option, the <strong>Employee may pay the company an amount equivalent to the remaining notice period salary in lieu of serving the notice</strong>. The buyout amount will be calculated based on the Employee's last drawn salary, and the buyout terms will be mutually agreed upon at the time of exercising this option. The company reserves the right to approve or deny the buyout request, depending on business requirements and operational needs.</li>
+        <li>You will be required to execute Confidentiality Agreement, Terms and Conditions of Employment, Code of Conduct and such other documents/undertakings/agreements as may be required by Infonet Comm from time to time.</li>
+        <li>In case any employee leaves the Company within two years of joining then any Joining/Relocation bonus, Training cost will have to be reimbursed by the employee for the expenses incurred by the Company.</li>
+        <li>All information, papers, correspondence, etc., pertaining to <strong>Infonet Comm</strong> business activities, commercial, technical, or otherwise coming into your possession during your training period shall be treated with strict confidence.</li>
+      </ol>
+
+      <div class="footer">
+        <div class="company">INFONET COMM ENTERPRISES PVT LTD</div>
+        <div><span class="red">Registered Office :</span> TS.137, TVK Industrial Estate, Ekkattuthangal, Guindy, Chennai-600032.</div>
+        <div><span class="red">Head Office :</span> 468/10, Balaji Nagar, Tiruchengode Road, Near Collector Office, Namakkal -637003. info@infonetcomm.com, www.infonetcomm.com</div>
+        <hr />
+        <div>ISO 9001:2015, ISO 27001: 2013, CIN No: U72200TN1999PTC136457, GST No: 33AACCM8749D1ZH, Customer Care: +91 8100 700 900</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="sheet">
+    <div class="watermark"></div>
+    <div class="inner">
+      <div class="header">
+        <img class="logo" src="{{logoUrl}}" alt="Logo" />
+      </div>
+
+      <ol start="12">
+        <li>You have been appointed on the presumption that the particulars furnished in your application and resume are correct. In the event the said particulars are found to be incorrect or that you have concluded or withheld some other relevant facts, your appointment with Infonet Comm shall stand terminated/cancelled without any notice.</li>
+        <li>The Employee acknowledges and agrees that their performance will be regularly reviewed as part of the company’s performance management system. <strong>In the event that the Employee does not meet or achieve their defined targets for three consecutive months, the Employee will be considered for the Performance Improvement Plan (PIP).</strong> The PIP will involve a formal discussion between the Employee and the management, where specific performance goals and improvement targets will be outlined. If the Employee fails to meet the performance expectations set during the PIP, further action may be taken, which could include reassignment, extension of probationary period, or termination of employment, based on the company’s policies and the nature of the underperformance.</li>
+      </ol>
+
+      <div class="section-title">Section – C</div>
+
+      <p>The below list of documents is to be submitted on the day of your joining. Please bring one photocopy of each document.</p>
+      <p><strong>Credentials (All documents mentioned below)</strong></p>
+
+      <ul class="star">
+        <li>SSC, HSC Mark Sheet</li>
+        <li>Graduation Mark Sheets (All semester) &amp; Degree Certificate</li>
+        <li>Master’s Mark Sheets (All semester) &amp; Degree Certificate</li>
+        <li>Diploma Mark Sheet (All semester) &amp; Diploma Certificate</li>
+        <li>Other Relevant Mark Sheets &amp; Certificates.</li>
+        <li>Previous company’s offer Letter, Appointment Letter, Salary revision letter.</li>
+        <li>Previous Company’s Relieving and Experience letters.</li>
+        <li>Previous Company's latest 3 months’ salary slips.</li>
+        <li>Identity proof (All documents mentioned below)</li>
+        <li>Driving License/Unique ID Card/Election Card</li>
+        <li>KYC Documents (PAN &amp; Aadhaar Card)</li>
+        <li>School leaving Certificate (OR) Birth Certificate.</li>
+        <li>Copy of PF Passbook.</li>
+        <li>3 passport-size photographs.</li>
+        <li>Form – 16.</li>
+      </ul>
+
+      <div class="footer">
+        <div class="company">INFONET COMM ENTERPRISES PVT LTD</div>
+        <div><span class="red">Registered Office :</span> TS.137, TVK Industrial Estate, Ekkattuthangal, Guindy, Chennai-600032.</div>
+        <div><span class="red">Head Office :</span> 468/10, Balaji Nagar, Tiruchengode Road, Near Collector Office, Namakkal -637003. info@infonetcomm.com, www.infonetcomm.com</div>
+        <hr />
+        <div>ISO 9001:2015, ISO 27001: 2013, CIN No: U72200TN1999PTC136457, GST No: 33AACCM8749D1ZH, Customer Care: +91 8100 700 900</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4 -->
+  <div class="sheet">
+    <div class="watermark"></div>
+    <div class="inner">
+      <div class="header">
+        <img class="logo" src="{{logoUrl}}" alt="Logo" />
+      </div>
+
+      <div class="section-title">Section - D</div>
+
+      <div class="salary-wrap">
+        <table class="salary">
+          <tr><td>Basic</td><td>Rs:{{basic}} /-</td></tr>
+          <tr><td>HRA</td><td>Rs:{{hrd}} /-</td></tr>
+          <tr><td>Other Allowance</td><td>Rs:{{otherAllowance}} /-</td></tr>
+          <tr class="bg-orange"><td>Gross Salary</td><td>Rs:{{grossSalaryA}} /-</td></tr>
+          <tr><td>ESI - Employee</td><td>Rs:{{esiEmployee}} /-</td></tr>
+          <tr><td>PF - Employee</td><td>Rs:{{pfEmployee}} /-</td></tr>
+          <tr><td>Insurance</td><td>Rs:{{insurance}} /-</td></tr>
+          <tr><td>Total Deduction</td><td>Rs:{{totalDeduction}} /-</td></tr>
+          <tr class="bg-orange"><td>Net Pay</td><td>Rs:{{takeHome}} /-</td></tr>
+          <tr><td>ESI - Employer</td><td>Rs:{{esiEmployer}} /-</td></tr>
+          <tr><td>PF - Employer</td><td>Rs:{{pfEmployer}} /-</td></tr>
+          <tr><td>Total Deduction</td><td>Rs:{{totalDeductionB}} /-</td></tr>
+          <tr class="bg-orange"><td>CTC</td><td>Rs:{{ctc}} /-</td></tr>
+          <tr class="bg-pink"><td>Annual CTC</td><td>Rs:{{annualCTC}} /-</td></tr>
+        </table>
+      </div>
+
+      <br>
+
+      <p>I have read and understood the terms and conditions of this offer letter. I accept the above offer with the said terms and conditions.</p>
+
+      <div class="signature-block">
+        <div class="signature-left">
+          <p><strong>For Infonet Comm Enterprises,</strong></p>
+          <img class="signature-img" src="{{signatureUrl}}" alt="Signature" />
+          <p><strong>Ravikumar Chinnusamy,</strong></p>
+          <p><strong>Managing Director.</strong></p>
+        </div>
+
+        <div class="signature-right">
+          <p><strong>Candidate Name &amp; Signature</strong></p>
+          <div class="spacer"></div>
+          <!-- <p><strong>{{employeeName}}</strong></p> -->
+
+         <img src="{{candidateSignature}}" style="height:60px; max-width:180px; display:block; margin:0 auto 8px auto;" />
+        <p><strong>{{employeeName}}</strong></p>
+
+
+        </div>
+      </div>
+      
+
+      <p class="auto-note">*\\ This is Automatic System Generated Letter //* </p>
+
+      <div class="footer">
+        <div class="company">INFONET COMM ENTERPRISES PVT LTD</div>
+        <div><span class="red">Registered Office :</span> TS.137, TVK Industrial Estate, Ekkattuthangal, Guindy, Chennai-600032.</div>
+        <div><span class="red">Head Office :</span> 468/10, Balaji Nagar, Tiruchengode Road, Near Collector Office, Namakkal -637003. info@infonetcomm.com, www.infonetcomm.com</div>
+        <hr />
+        <div>ISO 9001:2015, ISO 27001: 2013, CIN No: U72200TN1999PTC136457, GST No: 33AACCM8749D1ZH, Customer Care: +91 8100 700 900</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

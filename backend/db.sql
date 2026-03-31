@@ -1,0 +1,83 @@
+CREATE DATABASE IF NOT EXISTS offer_letter_portal;
+USE offer_letter_portal;
+
+CREATE TABLE IF NOT EXISTS offer_letters (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  document_id VARCHAR(100) NOT NULL UNIQUE,
+  emp_id VARCHAR(50) NOT NULL,
+  phone_number VARCHAR(20),
+  mail_id VARCHAR(150),
+  employee_name VARCHAR(150) NOT NULL,
+  location_department VARCHAR(150),
+  branch VARCHAR(100),
+  zone VARCHAR(100),
+  team_name VARCHAR(100),
+  designation VARCHAR(150),
+  doj DATE,
+  gender VARCHAR(20),
+  marital_status VARCHAR(30),
+  grade VARCHAR(20),
+  offer_date DATE,
+  probation_period VARCHAR(10),
+
+  gross_pay DECIMAL(12,2) DEFAULT 0,
+  insurance DECIMAL(12,2) DEFAULT 0,
+
+  basic DECIMAL(12,2) DEFAULT 0,
+  hrd DECIMAL(12,2) DEFAULT 0,
+  other_allowance DECIMAL(12,2) DEFAULT 0,
+  gross_salary_a DECIMAL(12,2) DEFAULT 0,
+  esi_employee DECIMAL(12,2) DEFAULT 0,
+  pf_employee DECIMAL(12,2) DEFAULT 0,
+  total_deduction DECIMAL(12,2) DEFAULT 0,
+  take_home DECIMAL(12,2) DEFAULT 0,
+  esi_employer DECIMAL(12,2) DEFAULT 0,
+  pf_employer DECIMAL(12,2) DEFAULT 0,
+  total_deduction_b DECIMAL(12,2) DEFAULT 0,
+  ctc DECIMAL(12,2) DEFAULT 0,
+  annual_ctc DECIMAL(12,2) DEFAULT 0,
+
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO offer_letters (
+  document_id, emp_id, phone_number, mail_id, employee_name,
+  location_department, branch, zone, team_name, designation,
+  doj, gender, marital_status, grade, offer_date, probation_period,
+  gross_pay, insurance, basic, hrd, other_allowance, gross_salary_a,
+  esi_employee, pf_employee, total_deduction, take_home,
+  esi_employer, pf_employer, total_deduction_b, ctc, annual_ctc
+) VALUES (
+  'Infonet Comm/HR/OL/2025/001',
+  'EMP001',
+  '9043946932',
+  'kumar@example.com',
+  'Kumaravel R',
+  'Head Office',
+  'NAMAKKAL',
+  'WEST',
+  'IT',
+  'Trainee',
+  '2023-07-12',
+  'MALE',
+  'UN MARRIED',
+  'Trainee',
+  '2025-04-16',
+  '3',
+  20000,
+  0,
+  12000,
+  4000,
+  4000,
+  20000,
+  150,
+  1800,
+  1950,
+  18050,
+  650,
+  1800,
+  2450,
+  22450,
+  269400
+);
